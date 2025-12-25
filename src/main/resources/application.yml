@@ -1,14 +1,11 @@
 spring:
-  profiles:
-    active: ${PROFILE:test}
+  datasource:
+    url: jdbc:postgresql://db.sqxownsstsoebicbktru.supabase.co:5432/postgres
+    username: postgres
+    password: a2972638139
+    driver-class-name: org.postgresql.Driver
 
-  # 允许 GitHub Pages 域名跨域
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-
-# 跨域配置
-cors:
-  allowed-origins:
-     https://Lff553.github.io
-     http://localhost:5173
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
