@@ -13,18 +13,35 @@ import java.util.List;
 
 @Configuration
 public class WebConfig {
+    @Configuration
+public class WebConfig {
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:4173", "http://localhost:5174"));
+        
+        // 添加所有需要的域名
+        configuration.setAllowedOrigins(List.of(
+            "http://localhost:5173", 
+            "http://localhost:4173", 
+            "http://localhost:5174",
+            "https://lff553.github.io",        // 你的 GitHub Pages
+            "https://lff553.github.io/",       // 带斜杠
+            "https://*.github.io",             // 允许所有 GitHub Pages
+            "https://lff553.github.io/lff.github.io/"  // 完整路径
+        ));
+        
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);  // 缓存预检请求1小时
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }
+}
+
 
 
