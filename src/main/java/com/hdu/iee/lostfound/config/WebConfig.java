@@ -13,8 +13,6 @@ import java.util.List;
 
 @Configuration
 public class WebConfig {
-    @Value("${cors.allowed-origins}")
-    private String[] allowedOrigins;
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -27,19 +25,6 @@ public class WebConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")
-                        .allowedOrigins(allowedOrigins)
-                        .allowedMethods("*")
-                        .allowedHeaders("*")
-                        .allowCredentials(true)
-                        .maxAge(3600);
-            }
-        };
-    }
 }
+
 
