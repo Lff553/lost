@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: ${PROFILE:test}
+
+  # 允许 GitHub Pages 域名跨域
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+# 跨域配置
+cors:
+  allowed-origins:
+     https://Lff553.github.io
+     http://localhost:5173
