@@ -13,9 +13,6 @@ import java.util.List;
 
 @Configuration
 public class WebConfig {
-    @Configuration
-public class WebConfig {
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -41,7 +38,7 @@ public class WebConfig {
         return source;
     }
 }
-}
+
 
 
 
