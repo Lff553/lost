@@ -8,19 +8,17 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        // 使用 allowedOriginPatterns
         registry.addMapping("/**")
-            .allowedOrigins(
+            .allowedOriginPatterns(
+                "https://lff553.github.io",
                 "http://localhost:5173",
-                "http://localhost:5174", 
-                "https://lff553.github.io"
+                "http://localhost:5174"
             )
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
             .allowedHeaders(
@@ -34,34 +32,33 @@ public class WebConfig implements WebMvcConfigurer {
     
     @Bean
     public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         
-        // 明确指定允许的源
-        List<String> allowedOrigins = Arrays.asList(
-            "http://localhost:5173",
-            "http://localhost:5174", 
-            "https://lff553.github.io"
-        );
+        // 使用 allowedOriginPatterns
+        config.addAllowedOriginPattern("https://lff553.github.io");
+        config.addAllowedOriginPattern("http://localhost:5173");
+        config.addAllowedOriginPattern("http://localhost:5174");
         
-        // 明确指定允许的方法
-        List<String> allowedMethods = Arrays.asList(
-            "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
-        );
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("OPTIONS");
+        config.addAllowedMethod("PATCH");
         
-        // 明确指定允许的头部（不要用 "*"）
-        List<String> allowedHeaders = Arrays.asList(
-            "Origin", "Content-Type", "Accept", "Authorization", 
-            "X-Requested-With", "X-Student-Id", "Access-Control-Request-Method",
-            "Access-Control-Request-Headers"
-        );
+        config.addAllowedHeader("Origin");
+        config.addAllowedHeader("Content-Type");
+        config.addAllowedHeader("Accept");
+        config.addAllowedHeader("Authorization");
+        config.addAllowedHeader("X-Requested-With");
+        config.addAllowedHeader("X-Student-Id");
+        config.addAllowedHeader("Access-Control-Request-Method");
+        config.addAllowedHeader("Access-Control-Request-Headers");
         
-        config.setAllowedOrigins(allowedOrigins);
-        config.setAllowedMethods(allowedMethods);
-        config.setAllowedHeaders(allowedHeaders);
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
         
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
