@@ -9,6 +9,10 @@ jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+app:
+  upload:
+    dir: ./uploads
+
 
 
 
