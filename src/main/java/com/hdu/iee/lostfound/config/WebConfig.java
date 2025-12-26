@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-            .allowedOriginPatterns(  // Spring Boot 3.x 必须用这个
+            .allowedOriginPatterns(
                 "https://lff553.github.io",
                 "http://localhost:5173",
                 "http://localhost:5174"
@@ -28,30 +28,6 @@ public class WebConfig implements WebMvcConfigurer {
             .allowCredentials(true)
             .maxAge(3600);
     }
-    
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        
-        // Spring Boot 3.x 的正确写法
-        List<String> allowedOriginPatterns = Arrays.asList(
-            "https://lff553.github.io",
-            "http://localhost:5173", 
-            "http://localhost:5174"
-        );
-        
-        configuration.setAllowedOriginPatterns(allowedOriginPatterns);
-        
-        configuration.setAllowedMethods(Arrays.asList(
-            "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
-        ));
-        
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
-        
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+
 }
+
