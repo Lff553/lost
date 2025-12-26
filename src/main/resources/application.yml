@@ -9,9 +9,6 @@ jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-mvc:
-    cors:
-      allowed-origins: ""
 
 
 
