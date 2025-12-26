@@ -22,16 +22,9 @@ public class WebConfig implements WebMvcConfigurer {
             .allowCredentials(true)
             .maxAge(3600);
     }
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 映射 /files 到上传目录
-        registry.addResourceHandler("/files/**")
-            .addResourceLocations("./uploads/")
-            .setCachePeriod(3600);
-    
-    }
 
 }
+
 
 
 
