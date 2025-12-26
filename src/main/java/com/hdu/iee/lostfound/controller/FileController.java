@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/files")
+@CrossOrigin(origins = "*")
 public class FileController {
 
     @Value("${app.upload.dir:uploads}")
@@ -49,4 +50,5 @@ public class FileController {
         }
     }
 }
+
 
