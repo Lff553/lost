@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
         
         // Spring Boot 3.x 必须用 setAllowedOriginPatterns
         configuration.setAllowedOriginPatterns(List.of(
-            "https://lff553.github.io", 
+            "https://Lff553.github.io", 
             "http://localhost:5173", 
             "http://localhost:5174"
         ));
@@ -44,3 +44,4 @@ public class WebConfig implements WebMvcConfigurer {
         return source;
     }
 }
+
