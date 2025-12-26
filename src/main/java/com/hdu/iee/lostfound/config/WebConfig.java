@@ -23,7 +23,11 @@ public class WebConfig implements WebMvcConfigurer {
                 "https://lff553.github.io"
             )
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-            .allowedHeaders("*")
+            .allowedHeaders(
+                "Origin", "Content-Type", "Accept", "Authorization", 
+                "X-Requested-With", "X-Student-Id", "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"
+            )
             .allowCredentials(true)
             .maxAge(3600);
     }
@@ -32,16 +36,28 @@ public class WebConfig implements WebMvcConfigurer {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         
-        // 明确指定允许的源，不要用 "*"
+        // 明确指定允许的源
         List<String> allowedOrigins = Arrays.asList(
             "http://localhost:5173",
             "http://localhost:5174", 
             "https://lff553.github.io"
         );
         
+        // 明确指定允许的方法
+        List<String> allowedMethods = Arrays.asList(
+            "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
+        );
+        
+        // 明确指定允许的头部（不要用 "*"）
+        List<String> allowedHeaders = Arrays.asList(
+            "Origin", "Content-Type", "Accept", "Authorization", 
+            "X-Requested-With", "X-Student-Id", "Access-Control-Request-Method",
+            "Access-Control-Request-Headers"
+        );
+        
         config.setAllowedOrigins(allowedOrigins);
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        config.setAllowedHeaders(Arrays.asList("*"));
+        config.setAllowedMethods(allowedMethods);
+        config.setAllowedHeaders(allowedHeaders);
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
         
