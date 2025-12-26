@@ -1,51 +1,64 @@
-package com.hdu.iee.lostfound.config;
+package com.hdu.iee.lostfound.controller;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import com.hdu.iee.lostfound.dto.AuthResponse;
+import com.hdu.iee.lostfound.dto.LoginRequest;
+import com.hdu.iee.lostfound.dto.RegisterRequest;
+import com.hdu.iee.lostfound.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
+@RestController
+@RequestMapping("/auth")
+@CrossOrigin(origins = "*")
+public class AuthController {
 
-@Configuration
-public class WebConfig implements WebMvcConfigurer {
+    @Autowired
+    private UserService userService;
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-            .allowedOrigins(
-                "http://localhost:5173",
-                "http://localhost:5174", 
-                "https://lff553.github.io"
-            )
-            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-            .allowedHeaders("*")
-            .allowCredentials(true)
-            .maxAge(3600);
+    /**
+     * 用户注册
+     */
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
+        AuthResponse response = userService.register(request);
+
+        if (response.isSuccess()) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.badRequest().body(response);
+        }
     }
-    
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        
-        List<String> allowedOrigins = Arrays.asList(
-            "http://localhost:5173",
-            "http://localhost:5174", 
-            "https://lff553.github.io"
-        );
-        
-        configuration.setAllowedOrigins(allowedOrigins);
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
-        
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+
+    /**
+     * 用户登录
+     */
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
+        AuthResponse response = userService.login(request);
+
+        if (response.isSuccess()) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    /**
+     * 检查学号是否存在
+     */
+    @GetMapping("/check-student-id/{studentId}")
+    public ResponseEntity<Boolean> checkStudentId(@PathVariable String studentId) {
+        boolean exists = userService.existsByStudentId(studentId);
+        return ResponseEntity.ok(exists);
+    }
+
+    /**
+     * 用户登出（前端处理，后端可选）
+     */
+    @PostMapping("/logout")
+    public ResponseEntity<AuthResponse> logout() {
+        return ResponseEntity.ok(AuthResponse.success("登出成功", null));
     }
 }
