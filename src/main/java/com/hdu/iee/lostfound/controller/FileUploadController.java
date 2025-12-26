@@ -17,7 +17,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/upload")
-@CrossOrigin(origins = "*")
 public class FileUploadController {
 
     @Value("${app.upload.dir:uploads}")
@@ -96,3 +95,4 @@ public class FileUploadController {
         }
     }
 }
+
