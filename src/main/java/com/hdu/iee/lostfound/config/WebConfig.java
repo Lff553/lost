@@ -3,6 +3,7 @@ package com.hdu.iee.lostfound.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -16,17 +17,41 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        // 使用 allowedOriginPatterns
         registry.addMapping("/**")
-            .allowedOriginPatterns(
+            .allowedOriginPatterns(  // Spring Boot 3.x 必须用这个
                 "https://lff553.github.io",
                 "http://localhost:5173",
                 "http://localhost:5174"
             )
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-            .allowedHeaders("*")  // 简化：使用通配符
+            .allowedHeaders("*")
             .allowCredentials(true)
             .maxAge(3600);
     }
     
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        
+        // Spring Boot 3.x 的正确写法
+        List<String> allowedOriginPatterns = Arrays.asList(
+            "https://lff553.github.io",
+            "http://localhost:5173", 
+            "http://localhost:5174"
+        );
+        
+        configuration.setAllowedOriginPatterns(allowedOriginPatterns);
+        
+        configuration.setAllowedMethods(Arrays.asList(
+            "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
+        ));
+        
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }
