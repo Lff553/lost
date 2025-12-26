@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*")
 public class AuthController {
 
     @Autowired
@@ -62,3 +61,4 @@ public class AuthController {
         return ResponseEntity.ok(AuthResponse.success("登出成功", null));
     }
 }
+
